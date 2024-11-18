@@ -1,0 +1,68 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define MOD ((int)1e9 + 7)
+#define MIN_ITER_FOR_MOD 17 // log baza 3 din (1e7 + 7) % 6
+#define HOR_ZONE 'H'
+#define VER_ZONE 'V'
+
+typedef long long int lli;
+
+lli dinamic_next_step(lli rez_so_far, char type_left, char type_right) {
+    if (type_left == VER_ZONE && type_right == VER_ZONE) {
+        return rez_so_far << 1; // * 2
+    }
+    if (type_left == VER_ZONE && type_right == HOR_ZONE) {
+        return rez_so_far << 1; // * 2
+    }
+    if (type_left == HOR_ZONE && type_right == VER_ZONE) {
+        return rez_so_far;
+    }
+    if (type_left == HOR_ZONE && type_right == HOR_ZONE) {
+        return rez_so_far * 3;
+    }
+    // invalid input
+    return 0;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    ifstream fin("colorare.in");
+    ofstream fout("colorare.out");
+
+    // 3 tipuri de culori
+    lli i, x, rez = 0;
+    int j, k;
+    char type, prev_type;
+
+    fin >> k;
+    // citim prima zona
+    fin >> x;
+    fin >> type;
+    // calcuam numarul de variante pentru prima zona
+    rez = (type == VER_ZONE) ? 3 : 6;
+    prev_type = type;
+    // calculam numarul de variante luand in considerare restul de bucati din primul grup
+    for (i = 1; i < x; i++) {
+        rez = dinamic_next_step(rez, prev_type, type) % MOD;
+    }
+
+    // calculam numarul de variante folosind restul de grupuri citite
+    for (j = 1; j < k; j++) {
+        fin >> x;
+        fin >> type;
+        // calculam separat primul pas, deoarece doar aici se poate schimba tipul
+        rez = dinamic_next_step(rez, prev_type, type) % MOD;
+        prev_type = type;
+        // calculam pentru restul de bucati din grup
+        for (i = 1; i < x; i++) {
+            rez = dinamic_next_step(rez, prev_type, type) % MOD;
+        }
+    }
+    fin.close();
+
+    fout << rez << "\n";
+    fout.close();
+    // cout << rez << "\n";
+    return 0;
+}

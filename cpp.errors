@@ -1,0 +1,7 @@
+./compresie.cpp:7:  Redundant blank line at the start of a code block should be deleted.  [whitespace/blank_line] [2]
+Done processing ./colorare.cpp
+Done processing ./compresie.cpp
+Done processing ./criptat.cpp
+Done processing ./oferta.cpp
+Done processing ./servere.cpp
+Total errors found: 1
